@@ -8,12 +8,12 @@ interface Result {
     average: number;
 }
 
-interface Values {
+interface Value {
     trainingData: Array<number>;
     goal: number;
 }
 
-const parseArguments = (args: string[]): Values => {
+const parseArgument = (args: string[]): Value => {
   if (args.length < 4) throw new Error('Not enough arguments');
   if (args.length > 10) throw new Error('Too many arguments');
 
@@ -24,7 +24,7 @@ const parseArguments = (args: string[]): Values => {
     return {
       goal: Number(args[2]),
       trainingData: data
-    }
+    };
   } else {
     throw new Error('Provided values were not numbers!');
   }
@@ -55,7 +55,7 @@ const calculateExercise = (horasByDia: Array<number>, target: number): Result =>
 }
 
 try {
-  const { trainingData, goal } = parseArguments(process.argv);
+  const { trainingData, goal } = parseArgument(process.argv);
   console.log(calculateExercise(trainingData, goal));
 } catch (error: unknown) {
     let errorMessage = 'Something bad happened.';
