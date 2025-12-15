@@ -5,6 +5,8 @@ import { calculateExercise, parseArgument } from './exerciseCalculator';
 
 const app = express();
 
+app.use(express.json());
+
 app.get('/hello', (_req, res) => {
     res.status(200).send('Hello Full Stack!');
 });
@@ -31,15 +33,15 @@ app.get('/bmi', (req, res) => {
 });
 
 app.post('/exercises', (req, res) => {
-    const dailyExercises = req.query.dailyExercises as string[];
-    const targets = req.query.targets as string;
+    const dailyExercise = req.body.dailyExercises as string[];
+    const targets = req.body.target as string;
 
     try {
-        const { exercisesDay, goal } = parseArgument(dailyExercises, targets);
+        const { exercisesDay, goal } = parseArgument(dailyExercise, targets);
         const result = calculateExercise(exercisesDay, goal);
         res.status(200).json({ result });
     } catch (error) {
-        res.status(400).json({ error });
+        res.status(400).json({ error: `${error.message} daly:${dailyExercise}, target:${targets}` });
     }
 });
 

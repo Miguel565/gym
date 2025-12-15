@@ -14,7 +14,7 @@ interface Value {
 }
 
 export const parseArgument = (args: string[], goals: string): Value => {
-  if (!isNaN(Number(args)) && !isNaN(Number(goals))) {
+  if (!args && !isNaN(Number(goals))) {
     if (args.length > 7 || args.length < 7) throw new Error('malformatted parameters');
     const str: string[] = args.slice()
     const data: number[] = str.map(a => Number(a));
