@@ -13,9 +13,9 @@ interface Value {
   goal: number;
 }
 
-export const parseArgument = (args: string[], goals: string): Value => {
-  if (!args && !isNaN(Number(goals))) {
-    if (args.length > 7 || args.length < 7) throw new Error('malformatted parameters');
+export const parseArgument = (args: Array<string>, goals: string): Value => {
+  if (Array.isArray(args) && !isNaN(Number(goals))) {
+    if (args.length !== 7) throw new Error('malformatted parameters');
     const str: string[] = args.slice()
     const data: number[] = str.map(a => Number(a));
     return {
@@ -35,10 +35,10 @@ export const calculateExercise = (dailyExercises: Array<number>, target: number)
   const trainSucces: boolean = averages >= target;
   let ratings: number = 3;
 
-  if (dailyExercises.filter(dia => dia === 0).length > 4) {
+  if (averages < 1.5) {
     ratings = 1;
     description = "Bad";
-  } else {
+  } else if(averages >= 1.6 && averages < (period / target)) {
     ratings = 2;
     description = "Medium";
   }
@@ -53,14 +53,3 @@ export const calculateExercise = (dailyExercises: Array<number>, target: number)
     average: averages
   };
 }
-/*
-try {
-  const { trainingData, goal } = parseArgument(process.argv);
-  console.log(calculateExercise(trainingData, goal));
-} catch (error: unknown) {
-    let errorMessage = 'Something bad happened.';
-    if (error instanceof Error) {
-        errorMessage += ' Error: ' + error.message;
-  }
-  console.log(errorMessage);
-}*/
